@@ -1,13 +1,17 @@
 import React from 'react';
-import {Auth} from "./pages";
 
-function App() {
+import {Auth, Home} from "./pages";
+import {Route} from "react-router";
+
+const App = () => {
     return (
         <div className="App">
-            <Auth/>
+            <Route exact path={['/', '/login']} component={Auth}/>
+            <Route path={'/im'} component={Home}/>
+
         </div>
     );
-}
+};
 
 
 export default App;
