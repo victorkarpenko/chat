@@ -18,6 +18,7 @@ const Home = () => {
                 date={'Tue Jan 21 2020 15:10:52'}
                 avatar={'https://i7.pngguru.com/preview/178/419/741/computer-icons-avatar-login-user-avatar.jpg'}
                 isMe={true}
+              //  isReaded={true}
             />
         </section>
     );
