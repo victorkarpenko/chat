@@ -23,7 +23,11 @@ const RegisterForm = (props) => {
             <ShadowBlock>
                 {!isSuccess ?
                     <Form onSubmit={handleSubmit} className="login-form">
-                        <Form.Item validateStatus={!touched.email ? '' : errors.email && touched.email ? 'error' : 'success'} hasFeedback>
+                        <Form.Item
+                            validateStatus={!touched.email ? '' : errors.email && touched.email ? 'error' : 'success'}
+                            hasFeedback
+                            help={touched.email && errors.email ? errors.email : ''}
+                        >
                             <Input id={'email'}
                                    size={'large'}
                                    type={"email"}
@@ -35,12 +39,14 @@ const RegisterForm = (props) => {
                         </Form.Item>
                         <Form.Item>
                             <Input id={'name'}
-                                    size={'large'}
+                                   size={'large'}
                                    prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                    placeholder="Ваше имя"
                             />
                         </Form.Item>
-                        <Form.Item validateStatus={!touched.password ? '' : errors.password && touched.password ? 'error' : 'success'}>
+                        <Form.Item
+                            validateStatus={!touched.password ? '' : errors.password && touched.password ? 'error' : 'success'}
+                            help={touched.password && errors.password ? errors.password : ''}>
                             <Input size={'large'}
                                    prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                    type="password"
@@ -68,7 +74,7 @@ const RegisterForm = (props) => {
 
                     <div className="auth__success-block">
                         <div>
-                            <Icon type="info-circle" theme="twoTone" />
+                            <Icon type="info-circle" theme="twoTone"/>
                         </div>
                         <h2>Подтвердите свой аккаунт</h2>
                         <p>
