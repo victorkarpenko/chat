@@ -6,7 +6,7 @@ import {Route} from "react-router";
 const App = () => {
     return (
         <div className="App">
-            <Route exact path={['/', '/login']} component={Auth}/>
+            <Route exact path={['/', '/login', '/registration']} component={Auth}/>
             <Route path={'/im'} component={Home}/>
 
         </div>

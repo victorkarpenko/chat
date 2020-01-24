@@ -9,15 +9,15 @@ import readed from 'assets/img/readed.svg'
 import noreaded from 'assets/img/noreaded.svg'
 
 
-const Message = ({avatar, text, date, user, isMe, isReaded}) => {
+const Message = ({avatar, text, date, user, isMe, isReaded, attachments}) => {
     return (
         <div className={classnames('message', {'message--isme': isMe})}>
             <div className="message__content">
                 {
-                    isMe && ( isReaded ?
-                        <img className={'message__icon-readed'} src={readed} alt=""/>
-                        :
-                        <img className={'message__icon-readed message__icon-readed--no'} src={noreaded} alt=""/>
+                    isMe && (isReaded ?
+                            <img className={'message__icon-readed'} src={readed} alt=""/>
+                            :
+                            <img className={'message__icon-readed message__icon-readed--no'} src={noreaded} alt=""/>
                     )
                 }
 
@@ -31,10 +31,24 @@ const Message = ({avatar, text, date, user, isMe, isReaded}) => {
                             {text}
                         </p>
                     </div>
+
+                    <div className="message__attachments">
+                        {
+                            attachments && attachments.map(item => (
+                                <div className="message__attachments-item">
+                                    <img src={item.url} alt={item.filename}/>
+                                </div>
+                            ))
+                        }
+                    </div>
+
                     <span className={'message__date'}>
                         {formatDistanceToNow(new Date(date), {addSuffix: true, locale: locale})}
                     </span>
+
                 </div>
+
+
             </div>
         </div>
     );
@@ -53,7 +67,8 @@ Message.propTypes = {
     date: PropTypes.string,
     user: PropTypes.object,
     isMe: PropTypes.bool,
-    isReaded: PropTypes.bool
+    isReaded: PropTypes.bool,
+    attachments: PropTypes.array
 };
 
 export default Message;
