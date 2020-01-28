@@ -2,17 +2,18 @@ import React from 'react';
 import {Form, Icon, Input} from "antd";
 import {Button, ShadowBlock} from "components";
 import {Link} from "react-router-dom";
+import {validateField} from "utils/helpers";
 
 const RegisterForm = (props) => {
     const isSuccess = false;
     const {
-        values,
         touched,
         errors,
         handleChange,
         handleBlur,
         handleSubmit,
     } = props;
+
     return (
         <>
             <div className="auth__top">
@@ -24,7 +25,7 @@ const RegisterForm = (props) => {
                 {!isSuccess ?
                     <Form onSubmit={handleSubmit} className="login-form">
                         <Form.Item
-                            validateStatus={!touched.email ? '' : errors.email && touched.email ? 'error' : 'success'}
+                            validateStatus={validateField(touched,errors,'email')}
                             hasFeedback
                             help={touched.email && errors.email ? errors.email : ''}
                         >
@@ -38,14 +39,17 @@ const RegisterForm = (props) => {
                             />
                         </Form.Item>
                         <Form.Item>
-                            <Input id={'name'}
+                            <Input id={'fullName'}
                                    size={'large'}
                                    prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                    placeholder="Ваше имя"
+                                   onChange={handleChange}
+                                   onBlur={handleBlur}
                             />
                         </Form.Item>
                         <Form.Item
-                            validateStatus={!touched.password ? '' : errors.password && touched.password ? 'error' : 'success'}
+                            validateStatus={validateField(touched, errors,'password')}
+                            hasFeedback
                             help={touched.password && errors.password ? errors.password : ''}>
                             <Input size={'large'}
                                    prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
@@ -57,11 +61,18 @@ const RegisterForm = (props) => {
                                    onBlur={handleBlur}
                             />
                         </Form.Item>
-                        <Form.Item>
+                        <Form.Item
+                            validateStatus={validateField(touched, errors,'passwordDouble')}
+                            hasFeedback
+                            help={touched.passwordDouble && errors.passwordDouble ? errors.passwordDouble : ''}
+                        >
                             <Input size={'large'}
                                    prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                    type="password"
                                    placeholder="Повторите пароль"
+                                   onChange={handleChange}
+                                   onBlur={handleBlur}
+                                   id={'passwordDouble'}
                             />
                         </Form.Item>
                         <Form.Item>
