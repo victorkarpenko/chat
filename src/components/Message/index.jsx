@@ -9,9 +9,10 @@ import readed from 'assets/img/readed.svg'
 import noreaded from 'assets/img/noreaded.svg'
 
 
-const Message = ({avatar, text, date, user, isMe, isReaded, attachments}) => {
+const Message = (props) => {
+    const {avatar, text, date, user, isMe, isReaded, isTyping, attachments} = props;
     return (
-        <div className={classnames('message', {'message--isme': isMe})}>
+        <div className={classnames('message', {'message--isme': isMe, 'message--is-type': isTyping})}>
             <div className="message__content">
                 {
                     isMe && (isReaded ?
@@ -27,24 +28,35 @@ const Message = ({avatar, text, date, user, isMe, isReaded, attachments}) => {
 
                 <div className="message__info">
                     <div className={'message__bubble'}>
-                        <p className={'message__text'}>
-                            {text}
-                        </p>
+                        {
+                            text && <p className={'message__text'}>{text}</p>
+                        }
+                        {
+                            isTyping && <div className="message__typing">
+                                <span></span><span></span><span></span>
+                            </div>
+                        }
                     </div>
 
-                    <div className="message__attachments">
-                        {
-                            attachments && attachments.map(item => (
+                    {
+                        attachments &&
+                        <div className="message__attachments">
+                            {attachments.map(item => (
                                 <div className="message__attachments-item">
                                     <img src={item.url} alt={item.filename}/>
                                 </div>
                             ))
-                        }
-                    </div>
+                            }
+                        </div>
+                    }
 
-                    <span className={'message__date'}>
-                        {formatDistanceToNow(new Date(date), {addSuffix: true, locale: locale})}
-                    </span>
+                    {
+                        date &&
+                        <span className={'message__date'}>
+                            {formatDistanceToNow(new Date(date), {addSuffix: true, locale: locale})}
+                        </span>
+                    }
+
 
                 </div>
 
@@ -68,7 +80,8 @@ Message.propTypes = {
     user: PropTypes.object,
     isMe: PropTypes.bool,
     isReaded: PropTypes.bool,
-    attachments: PropTypes.array
+    attachments: PropTypes.array,
+    isTyping: PropTypes.bool
 };
 
 export default Message;
