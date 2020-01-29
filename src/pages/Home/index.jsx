@@ -38,6 +38,16 @@ const Home = () => {
                 avatar={'https://i7.pngguru.com/preview/555/703/598/computer-icons-avatar-woman-user-avatar.jpg'}
                 isTyping
             />
+            <Message
+                date={'Tue Jan 24 2020 15:10:52'}
+                avatar={'https://i7.pngguru.com/preview/178/419/741/computer-icons-avatar-login-user-avatar.jpg'}
+                attachments={[
+                    {
+                        filename: "image.php",
+                        url: "https://source.unsplash.com/150x150/?random=1&nature"
+                    }]}
+                isImage
+            />
         </section>
     );
 };

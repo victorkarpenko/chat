@@ -12,7 +12,7 @@ import noreaded from 'assets/img/noreaded.svg'
 const Message = (props) => {
     const {avatar, text, date, user, isMe, isReaded, isTyping, attachments} = props;
     return (
-        <div className={classnames('message', {'message--isme': isMe, 'message--is-type': isTyping})}>
+        <div className={classnames('message', {'message--isme': isMe, 'message--is-typing': isTyping, 'message--image': attachments && attachments.length===1})}>
             <div className="message__content">
                 {
                     isMe && (isReaded ?
@@ -27,16 +27,18 @@ const Message = (props) => {
                 </div>
 
                 <div className="message__info">
-                    <div className={'message__bubble'}>
-                        {
-                            text && <p className={'message__text'}>{text}</p>
-                        }
-                        {
-                            isTyping && <div className="message__typing">
-                                <span></span><span></span><span></span>
-                            </div>
-                        }
-                    </div>
+                    { (text || isTyping) &&
+                        <div className={'message__bubble'}>
+                            {
+                                text && <p className={'message__text'}>{text}</p>
+                            }
+                            {
+                                isTyping && <div className="message__typing">
+                                    <span></span><span></span><span></span>
+                                </div>
+                            }
+                        </div>
+                    }
 
                     {
                         attachments &&
@@ -57,10 +59,7 @@ const Message = (props) => {
                         </span>
                     }
 
-
                 </div>
-
-
             </div>
         </div>
     );
