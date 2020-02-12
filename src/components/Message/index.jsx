@@ -10,8 +10,8 @@ import playIcon from 'assets/img/play.svg'
 import pauseIcon from 'assets/img/pause.svg'
 import {convertCurrentTime} from "utils/helpers";
 
-const Message = (props) => {
-    const {avatar, text, date, user, isMe, isReaded, isTyping, attachments, audio} = props;
+
+const MessageAudio = ({audio}) => {
 
     const [isPlaying, setPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -24,10 +24,10 @@ const Message = (props) => {
             setCurrentTime('00:00');
             setProgress(0);
         });
-        audioElem.current.addEventListener('timeupdate', ()=>{
-            const duration =  (audioElem.current && audioElem.current.duration) || 0;
+        audioElem.current.addEventListener('timeupdate', () => {
+            const duration = (audioElem.current && audioElem.current.duration) || 0;
             setCurrentTime((audioElem.current.currentTime));
-            setProgress((audioElem.current.currentTime/duration)*100);
+            setProgress((audioElem.current.currentTime / duration) * 100);
         })
     }, []);
 
@@ -42,6 +42,25 @@ const Message = (props) => {
 
     };
 
+    return <div className="message__audio">
+        <audio src={audio} ref={audioElem} preload={'auto'}/>
+        <div className="message__audio-progress" style={{width: progress + '%'}}/>
+        <div className="message__audio-info">
+            <div className="message__audio-btn">
+                <button onClick={togglePlaying}><img src={isPlaying ? pauseIcon : playIcon}
+                                                     alt=""/></button>
+            </div>
+            <div className="message__audio-wave">
+                <img src={waveIcon} alt=""/>
+            </div>
+
+            <span className={'message__audio-duration'}>{convertCurrentTime(currentTime)}</span>
+        </div>
+    </div>
+}
+
+const Message = (props) => {
+    const {avatar, text, date, user, isMe, isReaded, isTyping, attachments, audio} = props;
 
     return (
         <div className={classnames('message', {
@@ -58,7 +77,7 @@ const Message = (props) => {
                 </div>
 
                 <div className="message__info">
-                    {(audio || text || isTyping) &&
+                    {(text || isTyping) &&
                     <div className={'message__bubble'}>
                         {
                             text && <p className={'message__text'}>{text}</p>
@@ -66,24 +85,6 @@ const Message = (props) => {
                         {
                             isTyping && <div className="message__typing">
                                 <span/><span/><span/>
-                            </div>
-                        }
-
-                        {
-                            audio && <div className="message__audio">
-                                <audio src={audio} ref={audioElem} preload={'auto'}/>
-                                <div className="message__audio-progress" style={{width: progress + '%'}}/>
-                                <div className="message__audio-info">
-                                    <div className="message__audio-btn">
-                                        <button onClick={togglePlaying}><img src={isPlaying ? pauseIcon : playIcon}
-                                                                             alt=""/></button>
-                                    </div>
-                                    <div className="message__audio-wave">
-                                        <img src={waveIcon} alt=""/>
-                                    </div>
-
-                                    <span className={'message__audio-duration'}>{convertCurrentTime(currentTime)}</span>
-                                </div>
                             </div>
                         }
                     </div>
@@ -99,6 +100,11 @@ const Message = (props) => {
                             ))
                             }
                         </div>
+
+                    }
+
+                    {
+                        audio && <MessageAudio audio={audio}/>
                     }
 
                     {
