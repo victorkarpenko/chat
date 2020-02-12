@@ -1,14 +1,55 @@
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import * as PropTypes from "prop-types";
 import classnames from 'classnames';
 
 import './Message.scss'
 import {Time, IconReaded} from 'components'
 
+import waveIcon from 'assets/img/wave.svg'
+import playIcon from 'assets/img/play.svg'
+import pauseIcon from 'assets/img/pause.svg'
+import {convertCurrentTime} from "utils/helpers";
+
 const Message = (props) => {
-    const {avatar, text, date, user, isMe, isReaded, isTyping, attachments} = props;
+    const {avatar, text, date, user, isMe, isReaded, isTyping, attachments, audio} = props;
+
+    const [isPlaying, setPlaying] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+    const audioElem = useRef(null);
+
+    useEffect(() => {
+        audioElem.current.addEventListener('ended', () => {
+            setPlaying(false);
+            setCurrentTime('00:00');
+            setProgress(0);
+        });
+        audioElem.current.addEventListener('timeupdate', ()=>{
+            const duration =  (audioElem.current && audioElem.current.duration) || 0;
+            setCurrentTime((audioElem.current.currentTime));
+            setProgress((audioElem.current.currentTime/duration)*100);
+        })
+    }, []);
+
+
+    const togglePlaying = () => {
+        if (isPlaying) {
+            audioElem.current.pause()
+        } else {
+            audioElem.current.play();
+        }
+        setPlaying(!isPlaying)
+
+    };
+
+
     return (
-        <div className={classnames('message', {'message--isme': isMe, 'message--is-typing': isTyping, 'message--image': attachments && attachments.length===1})}>
+        <div className={classnames('message', {
+            'message--isme': isMe,
+            'message--is-typing': isTyping,
+            'message--image': attachments && attachments.length === 1,
+            'message--is-audio': audio
+        })}>
             <div className="message__content">
                 <IconReaded isMe={isMe} isReaded={isReaded}/>
 
@@ -17,17 +58,35 @@ const Message = (props) => {
                 </div>
 
                 <div className="message__info">
-                    { (text || isTyping) &&
-                        <div className={'message__bubble'}>
-                            {
-                                text && <p className={'message__text'}>{text}</p>
-                            }
-                            {
-                                isTyping && <div className="message__typing">
-                                    <span></span><span></span><span></span>
+                    {(audio || text || isTyping) &&
+                    <div className={'message__bubble'}>
+                        {
+                            text && <p className={'message__text'}>{text}</p>
+                        }
+                        {
+                            isTyping && <div className="message__typing">
+                                <span/><span/><span/>
+                            </div>
+                        }
+
+                        {
+                            audio && <div className="message__audio">
+                                <audio src={audio} ref={audioElem} preload={'auto'}/>
+                                <div className="message__audio-progress" style={{width: progress + '%'}}/>
+                                <div className="message__audio-info">
+                                    <div className="message__audio-btn">
+                                        <button onClick={togglePlaying}><img src={isPlaying ? pauseIcon : playIcon}
+                                                                             alt=""/></button>
+                                    </div>
+                                    <div className="message__audio-wave">
+                                        <img src={waveIcon} alt=""/>
+                                    </div>
+
+                                    <span className={'message__audio-duration'}>{convertCurrentTime(currentTime)}</span>
                                 </div>
-                            }
-                        </div>
+                            </div>
+                        }
+                    </div>
                     }
 
                     {
@@ -43,7 +102,7 @@ const Message = (props) => {
                     }
 
                     {
-                        date && <Time date={date} />
+                        date && <Time date={date}/>
                     }
 
                 </div>
@@ -67,7 +126,8 @@ Message.propTypes = {
     isMe: PropTypes.bool,
     isReaded: PropTypes.bool,
     attachments: PropTypes.array,
-    isTyping: PropTypes.bool
+    isTyping: PropTypes.bool,
+    audio: PropTypes.string
 };
 
 export default Message;

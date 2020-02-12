@@ -4,6 +4,7 @@ import './Dialogs.scss'
 import {DialogItem} from "components";
 import {orderBy} from "lodash";
 
+
 const Dialogs = ({items, userId}) => {
 
     return (
@@ -11,6 +12,7 @@ const Dialogs = ({items, userId}) => {
             {
                 orderBy(items, ['message.created_at'], ['desc'] ).map((item)=>(<DialogItem key={item.user._id} isMe={item.user._id === userId} {...item}/>))
             }
+
         </div>
     );
 };
