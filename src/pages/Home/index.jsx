@@ -33,7 +33,7 @@ const Home = () => {
                         fullname: 'Lev Hudoi',
                        // avatar: 'https://i7.pngguru.com/preview/178/419/741/computer-icons-avatar-login-user-avatar.jpg',
                         isOnline: false,
-                        _id: 1,
+                        _id: '21dsfdsfs34234',
                     },
                 },
                 {

@@ -1,7 +1,5 @@
 export default ({isAuth, values, errors}) => {
 
-    debugger;
-
     const rules = {
         email: (errors, value) => {
             if (!value) {

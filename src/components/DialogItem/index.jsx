@@ -3,18 +3,7 @@ import React from 'react';
 import format from 'date-fns/format'
 import isToday from 'date-fns/isToday'
 import * as classnames from "classnames";
-import {IconReaded} from "components";
-import {generateAvatarFromHash} from "utils/helpers";
-
-const getAvatar = user => {
-    if (user.avatar) {
-        return <img src={user.avatar} alt={user.fullname}/>
-    } else {
-        const avatarColor = generateAvatarFromHash('dsfdsf2342342342');
-        debugger;
-        return <div style={{background: avatarColor}}><span>{user.fullname[0]}</span></div>
-    }
-};
+import {IconReaded, Avatar} from "components";
 
 const getMessageTime = created_at => {
     if(isToday(created_at)){
@@ -35,13 +24,12 @@ const DialogItem = ({message, unreaded, user, isMe}) => {
     return (
         <div className={classnames('dialogs__item', {'dialogs__item--online': user.isOnline})}>
             <div className="dialogs__item-avatar">
-                {getAvatar(user)}
+                <Avatar user={user}/>
             </div>
             <div className="dialogs__item-info">
                 <div className="dialogs__item-info-top">
                     <b>{user.fullname}</b>
                     <span>
-                    {/*    <Time date={getMessageTime(message.created_at)}/>*/}
                         {getMessageTime(message.created_at)}
                     </span>
                 </div>
