@@ -4,12 +4,15 @@ import format from 'date-fns/format'
 import isToday from 'date-fns/isToday'
 import * as classnames from "classnames";
 import {IconReaded} from "components";
+import {generateAvatarFromHash} from "utils/helpers";
 
 const getAvatar = user => {
     if (user.avatar) {
         return <img src={user.avatar} alt={user.fullname}/>
     } else {
-        return null
+        const avatarColor = generateAvatarFromHash('dsfdsf2342342342');
+        debugger;
+        return <div style={{background: avatarColor}}><span>{user.fullname[0]}</span></div>
     }
 };
 

@@ -21,7 +21,7 @@ const MessageAudio = ({audio}) => {
     useEffect(() => {
         audioElem.current.addEventListener('ended', () => {
             setPlaying(false);
-            setCurrentTime('00:00');
+            setCurrentTime(0);
             setProgress(0);
         });
         audioElem.current.addEventListener('timeupdate', () => {
@@ -57,7 +57,7 @@ const MessageAudio = ({audio}) => {
             <span className={'message__audio-duration'}>{convertCurrentTime(currentTime)}</span>
         </div>
     </div>
-}
+};
 
 const Message = (props) => {
     const {avatar, text, date, user, isMe, isReaded, isTyping, attachments, audio} = props;
@@ -100,7 +100,6 @@ const Message = (props) => {
                             ))
                             }
                         </div>
-
                     }
 
                     {
